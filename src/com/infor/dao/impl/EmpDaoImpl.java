@@ -32,4 +32,21 @@ public class EmpDaoImpl implements EmpDao {
 		}
 		return salary;
 	}
+
+	@Override
+	public void printNameAndSal(int empId) {
+		Connection conn=DBConnection.getDBConnection();
+		try {
+			CallableStatement cs = conn.prepareCall("{call getNameAndSal(?,?,?)}");
+			cs.setInt(1, empId);
+			cs.registerOutParameter(2, Types.VARCHAR);
+			cs.registerOutParameter(3, Types.VARCHAR);
+			cs.execute();
+			String ename = cs.getString(2);
+			int sal = cs.getInt(3);
+			System.out.println("The emp name:"+ename+"Salary:"+sal);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
